@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Vista previa de Google Sheets</title>
+</head>
+<body>
+    <h2>📊 Datos desde Google Sheets</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Departamento</th>
+            <th>Ciudad</th>
+            <th>Número</th>
+            <th>Cédula</th>
+        </tr>
+        {% for fila in datos %}
+        <tr>
+            <td>{{ fila["DEPARTAMENTO"] }}</td>
+            <td>{{ fila["CIUDAD"] }}</td>
+            <td>{{ fila["NUMERO"] }}</td>
+            <td>{{ fila["CEDULA"] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <form method="POST" action="/enviar">
+        <button type="submit">🚀 Enviar todos al Microsoft Forms</button>
+    </form>
+</body>
+</html>
