@@ -96,3 +96,20 @@ def enviar():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
+
+
+from selenium.webdriver.chrome.options import Options
+
+chrome_options = Options()
+chrome_options.add_argument("--headless=new")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.binary_location = "/usr/bin/chromium"  # 👈 importante en Render
+
+from selenium.webdriver.chrome.service import Service
+
+driver = webdriver.Chrome(
+    service=Service("/usr/bin/chromedriver"),  # 👈 Render instala aquí el chromedriver
+    options=chrome_options
+)
+
