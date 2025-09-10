@@ -1,6 +1,7 @@
 Flask
-gunicorn
 selenium
 webdriver-manager
 gspread
 oauth2client
+gunicorn
+chromedriver-autoinstaller
