@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+import chromedriver_autoinstaller
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import os, json, time
@@ -23,22 +22,21 @@ else:
 
 client = gspread.authorize(creds)
 SPREADSHEET_ID = "1-RXO6IkgxMHBnRlycH7dExeozQwFCb4vxDNL-i8dAEo"
-spreadsheet = client.open_by_key(SPREADSHEET_ID)
-worksheet = spreadsheet.worksheet("CMIA")
+worksheet = client.worksheet("CMIA")
 
 
 def enviar_fila(fila):
-    """Función que toma una fila del Sheets y la envía al Microsoft Forms con Selenium"""
+    """Toma una fila de Google Sheets y la envía al Microsoft Forms"""
+
+    # instala automáticamente chromedriver
+    chromedriver_autoinstaller.install()
+
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=chrome_options
-    )
-
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://forms.office.com/r/JMfLJRFdJe")
     time.sleep(3)
 
@@ -96,20 +94,3 @@ def enviar():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
-
-
-from selenium.webdriver.chrome.options import Options
-
-chrome_options = Options()
-chrome_options.add_argument("--headless=new")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.binary_location = "/usr/bin/chromium"  # 👈 importante en Render
-
-from selenium.webdriver.chrome.service import Service
-
-driver = webdriver.Chrome(
-    service=Service("/usr/bin/chromedriver"),  # 👈 Render instala aquí el chromedriver
-    options=chrome_options
-)
-
